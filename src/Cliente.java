@@ -96,9 +96,9 @@ public class Cliente{
 		
 		int soma_segundo_digito = 0;
 		
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < 10; i++) {
 			
-			soma_segundo_digito += Character.getNumericValue(cpf.charAt(i)) * (i + 2);
+			soma_segundo_digito += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
 			
 		}
 		
