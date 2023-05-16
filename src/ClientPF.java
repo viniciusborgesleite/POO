@@ -1,4 +1,6 @@
 import java.util.Date;
+import java.util.Calendar;
+
 
 
 public class ClientPF extends Cliente{
@@ -77,124 +79,48 @@ public class ClientPF extends Cliente{
 		return "ClientPF [nome = " + this.getNome() + ", endereco = " + this.getEndereco() + ", cpf = " + cpf + ", genero =" + genero + ", DataLicenca =" + DataLicenca + ", educacao =" + educacao
 				+ ", DataNascimento =" + DataNascimento + ", classeEconomica =" + classeEconomica + "]";
 	}
-	
-	
-	public boolean caracteres_iguais(String cpf){
-		// Verifica se todos os números são iguais, retornando true ou false
-			
-		for (int i = 0; i < cpf.length(); i++ ) {
-			if(cpf.charAt(i) != cpf.charAt(0)) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-
-
-
-	public int  primeiro_digito_verificador(String cpf) {
-		// Efetua o cálculo do primeiro digito verificador
-		
-		int soma_primeiro_digito = 0;
-		
-		for (int i = 0; i < 9; i++) {
-			
-			soma_primeiro_digito += Character.getNumericValue(cpf.charAt(i)) * (10 - i);
-			
-		}
-		
-		int resto = soma_primeiro_digito % 11;
-		
-		if (resto < 2) {
-			return 0;
-		}
-		
-		else {
-			return (11 - resto);
-		}	
-		
-	}
-	
-	public int segundo_digito_verificador(String cpf) {
-		
-		// Efetua o calculo do segundo dígito verificador do cpf
-		
-		int soma_segundo_digito = 0;
-		
-		for (int i = 0; i < 10; i++) {
-			
-			soma_segundo_digito += Character.getNumericValue(cpf.charAt(i)) * (11 - i);
-			
-		}
-		
-		int resto = soma_segundo_digito % 11;
-		
-		if (resto < 2) {
-			return 0;
-		}
-		
-		else {
-			return (11 - resto);
-		}	
-		
-	}
-	
-	public boolean compara_digitos(String cpf) {
-		// Verifica se os dígitos comparadores calculados na função acima são compatíveis com 
-		// o do cpf dado como entrada
-			
-		if (Character.getNumericValue(cpf.charAt(9)) == primeiro_digito_verificador(cpf)) {
-			
-			if (Character.getNumericValue(cpf.charAt(10)) == segundo_digito_verificador(cpf)) {
-				return true;
-			}
-			else {
-				return false;
-			}
-			
-		}
-		
-		else {
-			return false;
-		}
-		
-		
-	}
-	
-	
-	
     
-    public boolean ValidarCpf(String cpf) {
-    	// Avalia a validade do cpf
+    
+    public int calcula_idade(Date nascimento) {
+    	Calendar data_atual = Calendar.getInstance();
     	
-    	String replaced_cpf = cpf.replaceAll("\\.", "");
-    	replaced_cpf = replaced_cpf.replaceAll("-", "");
+    	Calendar data_nascimento = Calendar.getInstance();
     	
-    	if (replaced_cpf.length() != 11) { 
-    		// Avalia o comprimento
-    		return false;
-    	}
-   
-    	if (caracteres_iguais(replaced_cpf) == true) {
-    		// Avalia se todos os caracteres são iguais
-    		return false;
-    	}
+    	data_nascimento.setTime(nascimento);
     	
-    	if(compara_digitos(replaced_cpf) == false){
-    		// Avalia dígitos verificadores
-    		return false;
-    	}
-   
-    	else {
-    		// Se todas as funções não identificarem algum erro, retorna true, ou seja
-    		// o cpf é válido.
-    		return true;
+    	
+    	int idade = data_atual.get(Calendar.YEAR) - data_nascimento.get(Calendar.YEAR);
+    	
+    	if(data_atual.get(Calendar.DAY_OF_YEAR) < data_nascimento.get(Calendar.DAY_OF_YEAR)) {
+    		idade = idade - 1;
     	}
     	
-    	
+    	return idade;
     	
     }
+	public double calculaScore() {
+		int valor_base = 100;
+		int quantidade_carros = (this.getLista()).size();
+		
+		int idade = calcula_idade(this.DataNascimento);
+		
+		double fator_idade;
+		
+		if (idade < 30) {
+			fator_idade = CalcSeguro.FATOR_18_30.getValor();
+		}
+		else if(idade < 60) {
+			fator_idade = CalcSeguro.FATOR_30_60.getValor();
+		}
+		else {
+			fator_idade = CalcSeguro.FATOR_60_90.getValor();		
+		}
+		
+		double score = valor_base * quantidade_carros * fator_idade;
+		
+		return score;
+		
+	}
     
     
 

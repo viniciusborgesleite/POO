@@ -8,8 +8,8 @@ public class Seguradora{
     private String telefone;
     private String email;
     private String endereco;
-    private List<Sinistro> lista_sinistro;
-    private List<Cliente> lista_clientes;
+    private ArrayList<Sinistro> lista_sinistro;
+    private ArrayList<Cliente> lista_clientes;
     
     
     public Seguradora(String name, String telefone, String email, String endereco){
@@ -54,6 +54,7 @@ public class Seguradora{
     public void set_endereco(String endereco){
         this.endereco = endereco;
     }
+    
  
 	@Override
 	public String toString() {
@@ -78,6 +79,15 @@ public class Seguradora{
 		return true;
 	}
 	
+	public ArrayList<Cliente> get_lista(){
+		return this.lista_clientes;
+	}
+	
+	public ArrayList<Sinistro> get_lista_sinistro(){
+		return this.lista_sinistro;
+	}
+	
+	
 	
 	public boolean remover_cliente(String nome) {
 		int i;
@@ -93,8 +103,14 @@ public class Seguradora{
 	}
 	
 	
+	
+	
 	public Cliente identifica_cliente(int index) {
 		return lista_clientes.get(index);
+	}
+	
+	public int tamanho_lista_cliente() {
+		return lista_clientes.size();
 	}
 	
 	
@@ -127,6 +143,48 @@ public class Seguradora{
 	public void listar_sinistros() {
 		for (int i = 0; i < lista_sinistro.size(); i++) {
 			System.out.println(identifica_sinistro(i));
+		}
+	}
+	
+	public boolean excluir_sinistro(int id) {
+		for (int i = 0; i < lista_sinistro.size(); i++) {
+			if (lista_sinistro.get(i).getId() == id) {
+				lista_sinistro.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private int calcula_quantidade_sinistro(Cliente cliente) {
+		int contador = 0;
+		for(int i = 0; i < this.lista_sinistro.size(); i++) {
+			if (this.lista_sinistro.get(i).getCliente().equals(cliente)) {
+				contador++;
+			}
+		}
+		return contador;
+	}
+	
+	public double calcularPrecoSeguroCliente(Cliente cliente) {
+		
+		double precoSeguro = cliente.calculaScore();
+		int fator_sinistro = 1 + calcula_quantidade_sinistro(cliente);
+		
+		return precoSeguro + fator_sinistro;	
+	}
+	
+	public double calcularReceita() {
+		double receita = 0;
+		for (int i = 0; i < this.lista_clientes.size(); i++) {
+			receita = receita + lista_clientes.get(i).getValorSeguro();
+		}
+		return receita;
+	}
+	
+	public void listar_veículos_seguradora() {
+		for (int i = 0; i < this.lista_clientes.size(); i++) {
+			this.lista_clientes.get(i).listar_veiculos();
 		}
 	}
 }
