@@ -15,20 +15,63 @@ public class Excluir {
 	public static void excluir_veiculo(ArrayList<Seguradora> lista_seg) { // Exclui um veículo da lista de veículos de um cliente
 		// Identifica o veículo a ser excluído
 		Seguradora seg = Seleciona_objetos.seleciona_seguradora(lista_seg);
-		Cliente cliente =  Seleciona_objetos.seleciona_cliente(seg);
+		
+		Cliente cliente = Seleciona_objetos.seleciona_cliente(seg);
+		
 		Veiculo veiculo = Seleciona_objetos.seleciona_veiculo(cliente);
 		
-		cliente.remover_veiculo(veiculo.getPlaca());
+		cliente.remove_veiculo(veiculo);
+		
 	}
 	
 	public static void excluir_sinistro(ArrayList<Seguradora> lista_seg) { // Exclui um sinistro da lista de sinistros da seguradora
 		
 		Seguradora seg = Seleciona_objetos.seleciona_seguradora(lista_seg);
 		
-		Sinistro sinistro = Seleciona_objetos.seleciona_sinistro(seg);
+		Seguro seguro = Seleciona_objetos.seleciona_seguro(seg);
 		
-		seg.remove_sinistro(sinistro.getId());
+		Sinistro sinistro = Seleciona_objetos.seleciona_sinistro(seguro);
 		
+		Condutor condutor = Seleciona_objetos.seleciona_condutor(seguro);
+		
+		seguro.remove_sinistro(sinistro);
+		
+		condutor.remove_sinistro(sinistro);
+		
+		
+	}
+	
+	public static void excluir_seguro(ArrayList<Seguradora> lista_seg) {
+		
+		Seguradora seg = Seleciona_objetos.seleciona_seguradora(lista_seg);
+		
+		Seguro seguro = Seleciona_objetos.seleciona_seguro(seg);
+		
+		seg.remover_seguro(seguro);
+		
+	}
+	
+	public static void excluir_condutor(ArrayList<Seguradora> lista_seg) {
+		
+		Seguradora seg = Seleciona_objetos.seleciona_seguradora(lista_seg);
+		
+		Seguro seguro = Seleciona_objetos.seleciona_seguro(seg);
+		
+		Condutor condutor = Seleciona_objetos.seleciona_condutor(seguro);
+		
+		seguro.remover_condutor(condutor);
+		
+	}
+	
+	public static void excluir_frota(ArrayList<Seguradora> lista_seg) {
+		
+		Seguradora seg = Seleciona_objetos.seleciona_seguradora(lista_seg);
+		
+		ClientPJ cliente = Seleciona_objetos.seleciona_cliente_PJ(seg);
+		
+		Frota frota = Seleciona_objetos.seleciona_frota(cliente);
+		
+		cliente.remover_frota(frota);
 	}
 }
 

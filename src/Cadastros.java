@@ -6,97 +6,30 @@ import java.util.Date;
 
 public class Cadastros {
 	
-	public static void cadastrar_cliente_pf(Seguradora seg) { // Lê os parâmetros e cadastra um cliente Pessoa Física
-		Scanner scanner = new Scanner(System.in);
+	static Scanner scanner = new Scanner(System.in);
+	
+	public static void cadastrar_cliente_pf(Seguradora seg) { // Lê os parâmetros e cadastra um cliente Pessoa Física	
+	
 		
+		String nome = LeDados.lê_nome();
 		
-		// Pega e valida o nome do cliente
-		System.out.println("Insira o nome do cliente:");
-		String nome = scanner.nextLine();
-		while (Validacao.valida_nome(nome) == false) {
-			System.out.println("O valor digitado acima não é válido: O nome deve conter apenas letras e, no máximo, 40 caracteres");
-			nome = scanner.nextLine();
-		}
+		String telefone = LeDados.le_telefone();
 		
-		//// Pega o endereço do cliente
-		System.out.println("Insira o endereço do cliente:");
-		String endereco = scanner.nextLine();
+		String endereco = LeDados.le_endereco();
 		
+		String email = LeDados.le_email();
 		
-		// Pega o cpf do cliente e o valida
-		System.out.println("Insira o cpf do cliente: (123-456-789-00)");
-		String cpf = scanner.nextLine();
-		while(Validacao.ValidarCpf(cpf) == false) {
-			System.out.println("O valor digitado acima não é válido: o cpf fornecido deve ter o seguinte formato: (123-456-789-00)");
-			cpf = scanner.nextLine();
-		}
+		String cpf = LeDados.le_cpf();
 		
+		String genero = LeDados.le_genero();
 		
-		// // Pega o gênero do cliente
-		System.out.println("Insira o gênero do cliente:");
-		String genero = scanner.nextLine();
+		Date data_licenca = LeDados.le_data_licenca();
 		
+		String escolaridade = LeDados.le_escolaridade();
 		
+		Date data_nascimento = LeDados.le_nascimento();
 		
-		// Pega e valida a data da licença gerada
-		System.out.println("Insira a data da licença gereada: (dia-mês-ano)");
-		String licenca = scanner.nextLine();
-		
-		boolean errado = true;
-		SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
-		Date data_licenca = new Date();
-		
-		while (errado == true) {
-			errado = false;
-			while (Validacao.valida_data(licenca) == false) {
-				System.out.println("O valor digitado acima não é válido: a data fornecida deve ter o seguinte formato: (00-00-0000)");
-				licenca = scanner.nextLine();
-			}
-
-			try {
-				 data_licenca = formato.parse(licenca);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				errado = true;
-			}
-		}
-		
-		
-		// Pega o grau de escolaridade do cliente
-		System.out.println("Insira o grau de escolaridade do cliente:");
-		String escolaridade = scanner.nextLine();
-		
-		
-		// Pega e valida a data de nascimento do cliente
-		System.out.println("Insira a data de nascimento do cliente: (dia-mês-ano)");
-		String nascimento = scanner.nextLine();
-		
-		boolean erro = true;
-		Date data_nascimento = new Date();
-		while (erro == true) {
-			erro = false;
-			while (Validacao.valida_data(nascimento) == false) {
-				System.out.println("O valor digitado acima não é válido: a data fornecida deve ter o seguinte formato: (00-00-0000)");
-				nascimento = scanner.nextLine();
-			}
-			
-			try {
-				data_nascimento = formato.parse(nascimento);
-			} catch (ParseException e) {
-				erro = true;
-			}
-		}
-		
-		
-		// Pega a classe econômica do cliente
-		System.out.println("Insira a classe econômica do cliente:");
-		String economica = scanner.nextLine();
-		
-		scanner.close();
-		
-		ClientPF novo_cliente_pf = new ClientPF(nome, endereco, cpf, genero, data_licenca, escolaridade, data_nascimento, economica);
-		
-		novo_cliente_pf.setValorSeguro(seg.calcularPrecoSeguroCliente(novo_cliente_pf));
+		ClientPF novo_cliente_pf = new ClientPF(nome, telefone, endereco, email, cpf, genero, data_licenca, escolaridade, data_nascimento);
 		
 		seg.adicionar_cliente(novo_cliente_pf);
 		
@@ -104,207 +37,176 @@ public class Cadastros {
 	}
 	
 	public static void cadastrar_cliente_pj(Seguradora seg) { // Lê os parâmetros e cadastra um cliente Pessoa Jurídica
-		Scanner scanner = new Scanner(System.in);
 		
-		// Pega o nome da empresa e o valida
-		System.out.println("Insira o nome da empresa:");
-		String nome = scanner.nextLine();
-		
-		while (Validacao.valida_nome(nome) == false) {
-			System.out.println("O valor digitado acima não é válido: O nome deve conter apenas letras e, no máximo, 40 caracteres");
-			nome = scanner.nextLine();
-		}
+		// String nome, String telefone, String endereco, String email, String cnpj, Date dataFundacao, int quantidadeFuncionario
 		
 		
+		 scanner = new Scanner(System.in);
 		
-		// Pega o endereço da empresa 
-		System.out.println("Insira o endereço da empresa:");
-		String endereco = scanner.nextLine();
+		String nome = LeDados.le_nome_empresa();
 		
+		String telefone = LeDados.le_telefone();
 		
+		String endereco = LeDados.le_endereco_empresa();
 		
-		// Pega o cnpj da empresa e o valida
-		System.out.println("Insira o cnpj da empresa: (apenas os números: (ex: 12345678998765)");
-		String cnpj = scanner.nextLine();
+		String email = LeDados.le_email();
 		
-		while(Validacao.validar_cnpj(cnpj) == false) {
-			System.out.println("O valor digitado acima não é válido: O cnpj deve ser válido e ser apenas com os seus números: (ex: 12345678998765)");
-			cnpj = scanner.nextLine();
-		}
+		String cnpj = LeDados.le_cnpj();
 		
+		Date dataFundacao = LeDados.le_data_fundacao();
 		
-		// Pega o valor da data de fundação da empresa e a valida
-		boolean erro = true;
-		int int_fundacao = 0;
-		while (erro) {
-			System.out.println("Insira a data de fundação da empresa: (Ex: 04022004)");
-			String fundacao = scanner.nextLine();
-			
-			while (Validacao.valida_data_int(fundacao) == false) {
-				System.out.println("A data inserida é inválida: a data deve conter apenas números, no formato (ddMMyyyy)");
-				System.out.println("Insira a data de fundação da empresa: (Ex: 04022004)");
-				 fundacao = scanner.nextLine();
-			}
-			try {
-				int_fundacao = Integer.parseInt(fundacao);
-			}
-			catch (NumberFormatException e) {
-				erro = true;
-			}	
-		}
+		int int_quantidade_funcionarios = LeDados.le_quantidade_funcionarios();
 		
-	
-		
-		// Pega e valida a quantidade de funcionários da empresa
-		erro = true;
-		int int_quantidade_funcionarios = 0;
-		while (erro == true) {
-			erro = false;
-			System.out.println("Insira a quantidade de funcionários da empresa: ");
-			String quantidade_funcionarios = scanner.nextLine();
-			
-			try {
-				int_quantidade_funcionarios = Integer.parseInt(quantidade_funcionarios);
-			}
-			catch (NumberFormatException e) {
-				System.out.println("O valor do ano inserido é inválido. Certifique-se de que apenas números foram digitados.");
-				erro = true;
-			}
-		}
-		
-		ClientPJ novo_cliente_pj = new ClientPJ(nome, endereco, cnpj, int_fundacao, int_quantidade_funcionarios);
-		
-		novo_cliente_pj.setValorSeguro(seg.calcularPrecoSeguroCliente(novo_cliente_pj));
+		ClientPJ novo_cliente_pj = new ClientPJ(nome, telefone, endereco, email, cnpj, dataFundacao, int_quantidade_funcionarios);
 		
 		seg.adicionar_cliente(novo_cliente_pj);
 		
-		scanner.close();
+		
 		}
 		
-		public static void cadastrar_veiculo(Cliente cliente) {
-			Scanner scanner = new Scanner(System.in);
+	public static void cadastrar_veiculo(Seguradora seg) {
+		// Lê os parâmetros e cadastra um veículo
 			
-			// Pega a marca do carro
-			System.out.println("Insira a marca do carro:");
-			String marca = scanner.nextLine();
+		String marca = LeDados.le_marca();
+		
+		String modelo = LeDados.le_modelo();
+		
+		String placa = LeDados.le_placa();
+		
+		int int_fabricacao = LeDados.le_fabricacao();
+		
+		Veiculo novo_veiculo = new Veiculo(marca, modelo, placa, int_fabricacao);
+		
+		Cliente cliente = Seleciona_objetos.seleciona_cliente(seg);
+		
+		if (cliente instanceof ClientPF) {
+			((ClientPF) cliente).cadastrar_veiculo(novo_veiculo);
+		}
+		
+		else {
 			
+			Frota frota = Seleciona_objetos.seleciona_frota((ClientPJ) cliente);
 			
-			// Pega o modelo do carro
-			System.out.println("Insira o modelo do carro:");
-			String modelo = scanner.nextLine();
+			frota.adicionar_veiculo(novo_veiculo);
+		}
 			
-			
-			// Pega e valida a placa do carro
-			System.out.println("Insira a placa do carro do carro: (ABC-1234 ou ABC1D23");
-			String placa = scanner.nextLine();
-			
-			while (Validacao.valida_placa(placa) == false) {
-				System.out.println("A placa inserida é inválida. A placa deve ser fornecida no formato antigo (ABC-1234) ou no formato Mercosul (ABC1D23)");
-				System.out.println("Insira a placa do carro do carro: (ABC-1234 ou ABC1D23)");
-				placa = scanner.nextLine();
-			}
-			
-			
-			
-			// Pega e valida o ano de fabricação do carro
-			boolean erro = true;
-			int int_fabricacao = 2004;
-			while (erro) {
-				erro = false;
-				
-				System.out.println("Insira o ano de fabricação do carro: (Ex: 2004)");
-				String fabricacao = scanner.nextLine();
-				
-				
-				try {
-					int_fabricacao = Integer.parseInt(fabricacao);
-				} catch (NumberFormatException e ) {
-					System.out.println("O valor do ano inserido é inválido. Certifique-se de que apenas números foram digitados.");
-					erro = true;
-				}
-			}
-			
-			Veiculo novo_veiculo = new Veiculo(marca, modelo, placa, int_fabricacao);
-			cliente.adiciona_veiculo(novo_veiculo);
-			
-			scanner.close();	
 			
 			
 		}
 		
-		public static void cadastrar_seguradora(ArrayList<Seguradora> lista) {
-			Scanner scanner = new Scanner(System.in);
-			
-			
-			// Pega o nome da seguradora e o valida
-			System.out.println("Insira o nome da seguradora:");
-			String nome = scanner.nextLine();
-			
-			while (Validacao.valida_nome(nome) == false) {
-				System.out.println("O nome inserido não é válido. Ele deve apresentar apenas letras e, no máximo, 40 caracteres");
-				System.out.println("Insira o nome da seguradora:");
-				nome = scanner.nextLine();
-			}
-			
-			
-			// Pega o telefone da seguradora e o valida
-			System.out.println("Insira o telefone da seguradora: 11912345678");
-			String telefone = scanner.nextLine();
-			
-			while (Validacao.valida_telefone(telefone) == false) {
-				System.out.println("O telefone inserido não é válido. O valor inserido deve conter apenas números e apresentar 11 dígitos.");
-				System.out.println("Insira o telefone da seguradora: 11912345678");
-				telefone = scanner.nextLine();
-			}
-			
-			
-			// Pega o email da seguradora
-			System.out.println("Insira o email da seguradora:");
-			String email = scanner.nextLine();
-			
-			
-			// Pega o endereço da seguradora
-			System.out.println("Insira o endereço da seguradora:");
-			String endereco = scanner.nextLine();
-			
-			
-			Seguradora nova_seguradora = new Seguradora(nome, telefone, email, endereco);
-			
-			lista.add(nova_seguradora);
-			
-			scanner.close();
-			
-		}
+	public static void cadastrar_seguradora(ArrayList<Seguradora> lista) {
+		// Lê os parâmetros e cadastra uma seguradora
 		
-		public static void cadastrar_sinistros(ArrayList<Seguradora> lista_seg) { // Lê os parâmetros e cadastra um sinistro
-			
-			
-			// Dá a opção para o cliente selecionar a seguradora, o cliente e o veículo correspondentes ao sinistro
-			Seguradora seg = Seleciona_objetos.seleciona_seguradora(lista_seg);
-			Cliente cliente =  Seleciona_objetos.seleciona_cliente(seg);
-			Veiculo veiculo = Seleciona_objetos.seleciona_veiculo(cliente);
-			
-			Scanner scanner = new Scanner(System.in);
-			
-			
-			// Lê os outros parâmetros e cadastra o sinistro
-			System.out.println("Insira a data do sinistro no formato (dd-MM-yyyy)");
-			String data = scanner.nextLine();
-			
-			while (Validacao.valida_data(data) == false) {
-				System.out.println("O valor digitado acima não é válido: a data fornecida deve ter o seguinte formato: (00-00-0000)");
-				data = scanner.nextLine();
-			}
-			
-			
-			System.out.println("Insira o endereço do sinistro:");
-			String endereco = scanner.nextLine();
-			
-			seg.gerar_sinistro(data, endereco, seg, veiculo, cliente);
-			
-			scanner.close();
-			
-		}
+		
+		String cnpj = LeDados.le_cnpj(); 
+		
+		String nome = LeDados.le_nome_seguradora();
+		
+		String telefone = LeDados.le_telefone();
+		
+		String email =  LeDados.le_email();
+		
+		String endereco = LeDados.le_endereco_seguradora();
+		                                       
+		Seguradora nova_seguradora = new Seguradora(cnpj, nome, telefone, email, endereco);
+		
+		lista.add(nova_seguradora);
+		
+		
+		
+	}
+		
+	public static void cadastrar_sinistros(ArrayList<Seguradora> lista_seg) { // Lê os parâmetros e cadastra um sinistro
+		
+		// Dá a opção para o cliente selecionar a seguradora, o cliente e o veículo correspondentes ao sinistro
+		//Date data, String endereco, Condutor condutor, Seguro seguro
+		Seguradora seguradora = Seleciona_objetos.seleciona_seguradora(lista_seg);
+		Seguro seguro = Seleciona_objetos.seleciona_seguro(seguradora);
+		Condutor condutor = Seleciona_objetos.seleciona_condutor(seguro);
+		
+		
+		Date data = LeDados.le_data_sinistro();
+		
+		String endereco = LeDados.le_endereco_sinsitro();
+		
+		Sinistro novo_sinistro = new Sinistro(data, endereco, condutor, seguro);
+		
+		seguro.adicionar_sinistro(novo_sinistro);
+		 
+		condutor.adicionar_sinistro(novo_sinistro);
+		
+		
+	}
+		
+	public static void cadastrar_seguro_pf(Seguradora seg) {
+		//public Seguro_PF(Date dataInicio, Date dataFim, Seguradora seguradora, Veiculo veiculo, ClientPF cliente) {
+		
+		Date dataInicio = LeDados.le_data_inicio();
+		
+		Date dataFim = LeDados.le_data_fim();
+		
+		ClientPF cliente = Seleciona_objetos.seleciona_cliente_PF(seg);
+		
+		Veiculo veiculo = Seleciona_objetos.seleciona_veiculo_PF(cliente);
+		
+		Seguro_PF novo_seguro_pf = new Seguro_PF(dataInicio, dataFim, seg, veiculo, cliente);
+		
+		seg.gerar_seguro(novo_seguro_pf);
+		
+	}
+	
+	public static void cadastrar_seguro_pj(Seguradora seg) {
+		// public Seguro_PJ(Date dataInicio, Date dataFim, Seguradora seguradora, Frota frota, ClientPJ cliente) {
+		
+		Date dataInicio = LeDados.le_data_inicio();
+		
+		Date dataFim = LeDados.le_data_fim();
+		
+		ClientPJ cliente = Seleciona_objetos.seleciona_cliente_PJ(seg);
+		
+		Frota frota = Seleciona_objetos.seleciona_frota(cliente);
+		
+		Seguro_PJ novo_seguro_pj =  new Seguro_PJ(dataInicio, dataFim, seg, frota, cliente);
+		
+		seg.gerar_seguro(novo_seguro_pj);
+		
+		
+	}
+	
+	public static void cadastrar_frota(Seguradora seg) {
+		// Lê os parâmetros necessários e cadastra uma frota
+		String code = LeDados.le_code();
+		
+		ClientPJ cliente = Seleciona_objetos.seleciona_cliente_PJ(seg);
+		
+		Frota frota = new Frota(code);
+		
+		cliente.cadastrar_frota(frota);
+	}
+	
+	public static void cadastrar_condutor(Seguradora seg) {
+		
+		// Lê os parâmetros necessários e cadastra um novo condutor no seguro selecionado
+		
+		String cpf = LeDados.le_cpf();
+		
+		String nome = LeDados.lê_nome();
+		
+		String telefone = LeDados.le_telefone();
+		
+		String endereco = LeDados.le_endereco();
+		
+		String email = LeDados.le_email();
+		
+		Date dataNasc = LeDados.le_nascimento();
+		
+		Condutor condutor = new Condutor(cpf, nome, telefone, endereco, email, dataNasc);
+		
+		Seguro seguro = Seleciona_objetos.seleciona_seguro(seg);
+		
+		seguro.autorizarCondutor(condutor);
+	}
+		
 		
 		
 		

@@ -4,20 +4,22 @@ import java.util.List;
 
 public class Seguradora{
     
+	private final String cnpj;
     private String name;
     private String telefone;
     private String email;
     private String endereco;
-    private ArrayList<Sinistro> lista_sinistro;
+    private ArrayList<Seguro> lista_seguros;
     private ArrayList<Cliente> lista_clientes;
     
     
-    public Seguradora(String name, String telefone, String email, String endereco){
+    public Seguradora(String cnpj, String name, String telefone, String email, String endereco){
+    	this.cnpj = cnpj;
         this.name = name;
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
-        this.lista_sinistro = new ArrayList<>();
+        this.lista_seguros = new ArrayList<>();
         this.lista_clientes = new ArrayList<>();
     }
     
@@ -54,40 +56,58 @@ public class Seguradora{
     public void set_endereco(String endereco){
         this.endereco = endereco;
     }
-    
  
+	public String getCnpj() {
+		return cnpj;
+	}
+	
+	public ArrayList<Cliente> get_lista_clientes(){
+		return this.lista_clientes;
+	}
+	
+	public ArrayList<Seguro> get_lista_seguros(){
+		return this.lista_seguros;
+	}
+
+	
 	@Override
 	public String toString() {
-		return "Seguradora [name=" + name + ", telefone=" + telefone + ", email=" + email + ", endereco=" + endereco
+		return "Seguradora [cnpj=" + cnpj + ", name=" + name + ", telefone=" + telefone + ", email=" + email
+				+ ", endereco=" + endereco + ", lista_seguros=" + lista_seguros + ", lista_clientes=" + lista_clientes
 				+ "]";
 	}
 
-	public void adiciona_sinistro(Sinistro inst_sinistro) {
-		lista_sinistro.add(inst_sinistro);
+	public void listar_clientes() {
+		for (int i = 0; i < lista_clientes.size(); i++) {
+			System.out.println(identifica_cliente(i));
+
+		}
 	}
 	
-	public void remove_sinistro(int index) {
-		lista_sinistro.remove(index);
+	public void gerar_seguro(Seguro seguro) {
+		lista_seguros.add(seguro);
 	}
+	
+	public boolean cancelar_seguro(int id) {
+		for (int i = 0; i < lista_seguros.size(); i++) {
+			if (lista_seguros.get(i).getId() == id) {
+				lista_seguros.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
     
-	public Sinistro identifica_sinistro(int index) {
-		return lista_sinistro.get(index);
+	public Seguro identifica_seguro(int index) {
+		return lista_seguros.get(index);
 	}
+	
 	
 	public boolean adicionar_cliente(Cliente inst_cliente) {
 		lista_clientes.add(inst_cliente);
 		return true;
 	}
-	
-	public ArrayList<Cliente> get_lista(){
-		return this.lista_clientes;
-	}
-	
-	public ArrayList<Sinistro> get_lista_sinistro(){
-		return this.lista_sinistro;
-	}
-	
-	
 	
 	public boolean remover_cliente(String nome) {
 		int i;
@@ -102,9 +122,6 @@ public class Seguradora{
 		return false;
 	}
 	
-	
-	
-	
 	public Cliente identifica_cliente(int index) {
 		return lista_clientes.get(index);
 	}
@@ -114,77 +131,57 @@ public class Seguradora{
 	}
 	
 	
-	public void listar_clientes() {
-		for (int i = 0; i < lista_clientes.size(); i++) {
-			System.out.println(identifica_cliente(i));
-
+	public void listar_seguros() {
+		for (Seguro seguro : this.lista_seguros) {
+			System.out.println(seguro);
 		}
 	}
 	
-	public boolean gerar_sinistro(String data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
-		Sinistro novo_sinistro = new Sinistro(data, endereco, seguradora, veiculo, cliente);
-		adiciona_sinistro(novo_sinistro);
-		return true;
-	}
-	
-	public boolean visualizarSinistro(String nome) {
+	public ArrayList<Seguro> getSegurosPorCliente(Cliente cliente){
 		
-		for (int i = 0; i < lista_sinistro.size(); i++) {
-			if(identifica_sinistro(i).getCliente().getNome() == nome) {
-				System.out.println(identifica_sinistro(i));
-				return true;
+		ArrayList<Seguro> listaSeguroCliente = new ArrayList<>();
+		
+		for (int i = 0; i < lista_seguros.size(); i++) {
+			
+			if (lista_seguros.get(i).getCliente().equals(cliente)) {
+				listaSeguroCliente.add(lista_seguros.get(i));
 			}
 		}
-		return false;
-		
-		
+		return listaSeguroCliente;
 	}
 	
-	public void listar_sinistros() {
-		for (int i = 0; i < lista_sinistro.size(); i++) {
-			System.out.println(identifica_sinistro(i));
-		}
-	}
-	
-	public boolean excluir_sinistro(int id) {
-		for (int i = 0; i < lista_sinistro.size(); i++) {
-			if (lista_sinistro.get(i).getId() == id) {
-				lista_sinistro.remove(i);
-				return true;
+	public ArrayList<Sinistro> getSinistrosPorCliente(Cliente cliente){
+		
+		ArrayList<Sinistro> listaSinistroCliente = new ArrayList<>();
+			
+		for (int i = 0; i < lista_seguros.size(); i++) {
+			
+			if (lista_seguros.get(i).getCliente().equals(cliente)) {
+				return lista_seguros.get(i).getLista_sinistros();
 			}
 		}
-		return false;
-	}
-	
-	private int calcula_quantidade_sinistro(Cliente cliente) {
-		int contador = 0;
-		for(int i = 0; i < this.lista_sinistro.size(); i++) {
-			if (this.lista_sinistro.get(i).getCliente().equals(cliente)) {
-				contador++;
-			}
-		}
-		return contador;
-	}
-	
-	public double calcularPrecoSeguroCliente(Cliente cliente) {
-		
-		double precoSeguro = cliente.calculaScore();
-		int fator_sinistro = 1 + calcula_quantidade_sinistro(cliente);
-		
-		return precoSeguro + fator_sinistro;	
+		return listaSinistroCliente;
 	}
 	
 	public double calcularReceita() {
-		double receita = 0;
-		for (int i = 0; i < this.lista_clientes.size(); i++) {
-			receita = receita + lista_clientes.get(i).getValorSeguro();
+		double soma = 0;
+		
+		for (Seguro seguro : this.lista_seguros) {
+			soma = soma + seguro.getValor_mensal();
 		}
-		return receita;
+		
+		return soma;
+		
 	}
 	
-	public void listar_veículos_seguradora() {
-		for (int i = 0; i < this.lista_clientes.size(); i++) {
-			this.lista_clientes.get(i).listar_veiculos();
+	public void remover_seguro(Seguro seguro) {
+		
+		for (Seguro seg : this.get_lista_seguros()) {
+			if (seg.equals(seguro)) {
+				this.get_lista_seguros().remove(seg);
+			}
 		}
 	}
 }
+
+	

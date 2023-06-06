@@ -1,5 +1,6 @@
 import java.util.Date;
 import java.util.Calendar;
+import java.util.ArrayList;
 
 
 
@@ -10,19 +11,21 @@ public class ClientPF extends Cliente{
 	private Date DataLicenca;
 	private String educacao;
 	private Date DataNascimento;
-	private String classeEconomica;
-	
-	public ClientPF(String nome, String endereco, 
-			String cpf, String genero, Date DataLicenca, String educacao, Date DataNascimento, String classeEconomica) {
+	private ArrayList<Veiculo> lista_veiculos;
 
-		super(nome, endereco);
+	
+	public ClientPF(String nome, String telefone, String endereco, String email,
+			String cpf, String genero, Date DataLicenca, String educacao, Date DataNascimento) {
+
+		super(nome, telefone, endereco, email);
 		// TODO Auto-generated constructor stub
 		this.cpf = cpf;
 		this.genero = genero;
 		this.DataLicenca = DataLicenca;
 		this.educacao = educacao;
 		this.DataNascimento = DataNascimento;
-		this.classeEconomica = classeEconomica;
+		this.lista_veiculos = new ArrayList<>();
+		
 		
 	}
 
@@ -66,61 +69,52 @@ public class ClientPF extends Cliente{
 		DataNascimento = dataNascimento;
 	}
 
-	public String getClasseEconomica() {
-		return classeEconomica;
+	public ArrayList<Veiculo> getLista_veiculos() {
+		return lista_veiculos;
 	}
 
-	public void setClasseEconomica(String classeEconomica) {
-		this.classeEconomica = classeEconomica;
+	public void setLista_veiuclos(ArrayList<Veiculo> lista_veiuclos) {
+		this.lista_veiculos = lista_veiuclos;
 	}
+
+	public boolean cadastrar_veiculo(Veiculo veiculo) {
+		lista_veiculos.add(veiculo);
+		return true;
+	}
+	
+	public boolean remover_veiculo(Veiculo veiculo) {
+		for (int i = 0; i < lista_veiculos.size(); i++) {
+			if (lista_veiculos.get(i).equals(veiculo)) {
+				lista_veiculos.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+    
+    
+   public void listar_veiculos() {
+	   for (Veiculo veiculo : this.getLista_veiculos()) {
+		   System.out.println(veiculo);
+	   }
+   }
+   
+   public void remove_veiculo(Veiculo veiculo) {
+	 
+	   for (Veiculo vei : this.getLista_veiculos()) {
+		   if (vei.equals(veiculo)) {
+			   this.getLista_veiculos().remove(vei);
+		   }
+	   }
+	   
+   }
 
 	@Override
 	public String toString() {
-		return "ClientPF [nome = " + this.getNome() + ", endereco = " + this.getEndereco() + ", cpf = " + cpf + ", genero =" + genero + ", DataLicenca =" + DataLicenca + ", educacao =" + educacao
-				+ ", DataNascimento =" + DataNascimento + ", classeEconomica =" + classeEconomica + "]";
+		return "ClientPF [cpf=" + cpf + ", genero=" + genero + ", DataLicenca=" + DataLicenca + ", educacao=" + educacao
+				+ ", DataNascimento=" + DataNascimento + "]";
 	}
-    
-    
-    public int calcula_idade(Date nascimento) {
-    	Calendar data_atual = Calendar.getInstance();
-    	
-    	Calendar data_nascimento = Calendar.getInstance();
-    	
-    	data_nascimento.setTime(nascimento);
-    	
-    	
-    	int idade = data_atual.get(Calendar.YEAR) - data_nascimento.get(Calendar.YEAR);
-    	
-    	if(data_atual.get(Calendar.DAY_OF_YEAR) < data_nascimento.get(Calendar.DAY_OF_YEAR)) {
-    		idade = idade - 1;
-    	}
-    	
-    	return idade;
-    	
-    }
-	public double calculaScore() {
-		int valor_base = 100;
-		int quantidade_carros = (this.getLista()).size();
-		
-		int idade = calcula_idade(this.DataNascimento);
-		
-		double fator_idade;
-		
-		if (idade < 30) {
-			fator_idade = CalcSeguro.FATOR_18_30.getValor();
-		}
-		else if(idade < 60) {
-			fator_idade = CalcSeguro.FATOR_30_60.getValor();
-		}
-		else {
-			fator_idade = CalcSeguro.FATOR_60_90.getValor();		
-		}
-		
-		double score = valor_base * quantidade_carros * fator_idade;
-		
-		return score;
-		
-	}
+
     
     
 

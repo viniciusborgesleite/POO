@@ -2,12 +2,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public enum Menu {
+	
 	CADASTRAR(1, "Cadastrar"),
 	LISTAR(2, "Listar objetos"),
 	EXCLUIR(3, "Exlcuir um objeto"),
 	GERAR_SINISTRO(4, "Gerar um sinistro"),
-	TRANSFERIR_SEGURO(5, "Transferir um seguro"),
-	CALCULAR_RECEITA_SEGURADORA(6, "Calcular a receita geral da Seguradora"),
+	CALCULAR_RECEITA_SEGURADORA(5, "Calcular a receita geral da Seguradora"),
 	SAIR(0, "Sair");
 
 	
@@ -58,13 +58,9 @@ public enum Menu {
 			Cadastros.cadastrar_sinistros(lista_seg);
 			break;
 		case 5:
-			Transferencia_seguro.transfere_seguro(lista_seg);
-			break;
-		case 6:
 			Seleciona_objetos.seleciona_seguradora(lista_seg).calcularReceita();
 			break;
 		case 0: 
-			//break
 			break;
 			
 		}

@@ -1,22 +1,23 @@
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
-public class Cliente{
+
+public abstract class Cliente{
     
     private String nome;
+    private String telefone;
     private String endereco;
-    private ArrayList<Veiculo> listaVeiculos;
-    private double valorSeguro;
+    private String email;
+    
 
-
-
-	public Cliente(String nome, String endereco) {
+	public Cliente(String nome, String telefone, String endereco, String email) {
 		super();
 		this.nome = nome;
+		this.telefone = telefone;
 		this.endereco = endereco;
-		this.listaVeiculos = new ArrayList<>();
-		this.valorSeguro = 0;
+		this.email = email;
 	}
 
 
@@ -43,79 +44,53 @@ public class Cliente{
 		this.endereco = endereco;
 	}
 	
-	public ArrayList<Veiculo> getLista(){
-		return listaVeiculos;
-	}
 	
+	public String getTelefone() {
+		return telefone;
+	}
+
+
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+
+	public int calcula_idade(Date nascimento) {
+		// Calcula a idade do cidadão com base na data de nascimento
+    	Calendar data_atual = Calendar.getInstance();
+    	
+    	Calendar data_nascimento = Calendar.getInstance();
+    	
+    	data_nascimento.setTime(nascimento);
+    	
+    	
+    	int idade = data_atual.get(Calendar.YEAR) - data_nascimento.get(Calendar.YEAR);
+    	
+    	if(data_atual.get(Calendar.DAY_OF_YEAR) < data_nascimento.get(Calendar.DAY_OF_YEAR)) {
+    		idade = idade - 1;
+    	}
+    	
+    	return idade;
+    	
+    }
 	
-	public ArrayList<Veiculo> getListaVeiculos() {
-		return listaVeiculos;
-	}
-
-
-
-	public void setListaVeiculos(ArrayList<Veiculo> listaVeiculos) {
-		this.listaVeiculos = listaVeiculos;
-	}
-
-
-
-	public double getValorSeguro() {
-		return valorSeguro;
-	}
-
-
-
-	public void setValorSeguro(double valorSeguro) {
-		this.valorSeguro = valorSeguro;
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "Cliente [nome=" + nome + ", endereco=" + endereco + ", listaVeiculos=" + listaVeiculos
-				+ ", valorSeguro=" + valorSeguro + "]";
-	}
-
-	public void listar_sinistro(Seguradora seg) {
-		for (int i = 0; i < seg.get_lista_sinistro().size(); i++) {
-			
-			if(seg.get_lista_sinistro().get(i).getCliente().getNome() == this.nome) {
-				System.out.println(seg.get_lista_sinistro().get(i));
-				
-			}
-		}
-	}
-
-	public void adiciona_veiculo(Veiculo veiculo_add) {
-		listaVeiculos.add(veiculo_add);
-	}
+	public abstract void listar_veiculos(); 
 	
-
-	public boolean remover_veiculo(String placa) {
-		for (int i = 0; i < listaVeiculos.size(); i ++) {
-			if (listaVeiculos.get(i).getPlaca() == placa) {
-				listaVeiculos.remove(i);
-				return true;
-			}
-		}
-		return false;
-		
-	}
-	public Veiculo identifica_veiculo(int index) {
-		return listaVeiculos.get(index);
-	}
-	
-	public void listar_veiculos() {
-		for (int i = 0; i < this.listaVeiculos.size(); i++){
-			System.out.println(this.listaVeiculos.get(i).getPlaca());
-		}
-	}
-	
-	public double calculaScore() {
-		return 0;
-	}
+	public abstract void remove_veiculo(Veiculo veiculo);
 	
 	
 }

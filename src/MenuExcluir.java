@@ -3,12 +3,15 @@ import java.util.Scanner;
 
 public enum MenuExcluir {
 	EXCLUIR_CLIENTE(1, "Excluir um cliente"),
-	ECLUIR_VEICULO(2, "Excluir um veículo"),
-	EXCLUIR_SINSITRO(3, "Excluir um sinsitro"),
-	VOLTAR(4, "Voltar");
+	EXCLUIR_SEGURO(2, "Excluir um seguro"),
+	EXCLUIR_CONDUTOR(3, "Excluir um condutor"),
+	EXCLUIR_FROTA(4, "Excluir uma frota"),
+	EXCLUIR_VEICULO(5, "Excluir um veículo"),
+	EXCLUIR_SINSITRO(6, "Excluir um sinsitro"),
+	VOLTAR(7, "Voltar");
 	
-private int valor;
-private String descricao;
+	private int valor;
+	private String descricao;
 	
 	private MenuExcluir(int valor, String descricao) {
 		this.valor = valor;
@@ -45,7 +48,17 @@ private String descricao;
 			Excluir.excluir_sinistro(lista_seg);
 			break;
 		case 4:
+			Excluir.excluir_frota(lista_seg);
+			break;
+		case 5:
+			Excluir.excluir_veiculo(lista_seg);
+			break;
+		case 6:
+			Excluir.excluir_sinistro(lista_seg);
+			break;
+		case 7:
 			Menu.CADASTRAR.seleciona_opcao(lista_seg);
+			break;
 		}
 		scanner.close();
 	}
